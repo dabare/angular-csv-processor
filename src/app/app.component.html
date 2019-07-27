@@ -1,21 +1,58 @@
-<!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
-  <h1>
-    Welcome to {{ title }}!
-  </h1>
-  <img width="300" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
-</div>
-<h2>Here are some links to help you start: </h2>
-<ul>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/tutorial">Tour of Heroes</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/cli">CLI Documentation</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://blog.angular.io/">Angular blog</a></h2>
-  </li>
-</ul>
+<input type="file" #csvReader name="Upload CSV" id="txtFileUpload" (change)="uploadListener($event)" accept=".csv" />
+<br>
+<h4>Raw data <button (click)="showHideRawdata()">Hide/Show</button></h4>
+<div style="height: 30vh; overflow-y: scroll;" *ngIf="showRawdata">
 
-<router-outlet></router-outlet>
+<table class="minimalistBlack" *ngIf="records.length > 0">
+  <thead>
+  <tr>
+    <th *ngFor="let header of headers">{{header.name}}</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let record of records;let i = index;">
+    <td *ngFor="let header of headers;let j = index;"> <span>{{record[j]}}</span> </td>
+  </tr>
+  </tbody>
+</table>
+</div>
+<!--<button (click)="doPreprocessing()">Preprocess data</button>-->
+<br>
+<h4>Preprocessed data <button (click)="showHidePreData()">Hide/Show</button></h4>
+<div style="height: 30vh; overflow-y: scroll;" *ngIf="showPredata">
+
+  <table class="minimalistBlack" *ngIf="records.length > 0">
+    <thead>
+    <tr>
+      <th *ngFor="let header of headers">{{header.name}}</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let record of preprocessedRecords;let i = index;">
+      <td *ngFor="let header of headers;let j = index;"> <span>{{record[j]}}</span> </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+<h4>Groups <button (click)="showHidePreData()">Hide/Show</button></h4>
+<div style="height: 30vh; overflow-y: scroll;">
+
+  <table class="minimalistBlack" *ngIf="records.length > 0">
+    <thead>
+    <tr>
+      <th *ngFor="let header of headers">{{header.name}}</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr >
+      <td valign="top" *ngFor="let header of headers">{{getLength(header)}}</td>
+    </tr>
+    <tr >
+      <td valign="top" *ngFor="let header of headers">
+        <p *ngFor="let group of getGroups(header)"> {{group}} - {{header.groups[group]}}</p>
+        </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
